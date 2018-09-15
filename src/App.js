@@ -15,7 +15,13 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
-    booksSections: ['Currently Reading', 'Want to Read', 'Read', 'None'],
+    booksSections: [
+      {titleShelf: 'Currently Reading', shelf:'currentlyReading'},
+      {titleShelf: 'Want to Read', shelf:'wantToRead'},
+      {titleShelf: 'Read', shelf:'read'},
+      {titleShelf: 'None', shelf:'none'}
+    ],
+
     showSearchPage: false
   }
 
@@ -24,6 +30,28 @@ class BooksApp extends React.Component {
       this.setState({ books })
     })
   }
+
+  changeShelf = (e, bookUpdate) => {
+    const shelf = e.target.value;
+    let updatedBooks = [];
+
+    // Call API to update Book
+    BooksAPI.update(bookUpdate, shelf)
+      .then(res => {
+
+        // Change bookShelf to selected shelf
+        bookUpdate.shelf = shelf
+
+        // Get all books !== of book selected
+        updatedBooks = this.state.books.filter(book => book.id !== bookUpdate.id)
+
+        // Change updatedBooks with updated list
+        updatedBooks.push(bookUpdate)
+
+        // Change state with book updated
+        this.setState({ books: updatedBooks })
+      });
+  };
 
   render() {
 
@@ -56,7 +84,7 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
 
-            <ListBooks listBooksApi={ this.state.books } section={ this.state.booksSections } />
+            <ListBooks listBooksApi={ this.state.books } section={ this.state.booksSections } changeShelf={this.changeShelf} />
 
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>

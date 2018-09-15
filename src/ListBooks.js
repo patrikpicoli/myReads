@@ -9,33 +9,24 @@ export default class ListBooks extends Component {
     section: PropTypes.array.isRequired
   }
 
-  state = {
-    readed: 'None'
-  }
-
-  componentDidUpdate() {
-    console.log('Rodei lista no DidUpdate')
-  }
-
   render() {
 
-    const { listBooksApi, section } = this.props
-    console.log("Rodei a lista")
+    const { listBooksApi, section, changeShelf } = this.props
 
     return (
       <div className="list-books-content">
         {section.map((shelf, key) =>
           <div key={key} className="bookshelf">
-            <h2 className="bookshelf-title">{ shelf }</h2>
+            <h2 className="bookshelf-title">{ shelf.titleShelf }</h2>
             <div className="bookshelf-books">
               <ol className="books-grid">
                 {listBooksApi.map(book =>
                   <Book
                     key={ book.id }
                     thisBook={book}
-                    select={section}
-                    statusRead={this.state.readed}
-                    shelf={shelf}
+                    shelf={shelf.shelf}
+                    changeShelf={changeShelf}
+                    section={section}
                     />
                 )}
               </ol>

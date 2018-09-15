@@ -1,36 +1,25 @@
 import React, { Component } from 'react'
-import * as BooksAPI from './BooksAPI'
 
-let bookStatus = null
 class Book extends Component {
-
-  state = {
-    bookState: this.props.statusRead
-  }
-
-  handleChange(e, thisBook) {
-    bookStatus = e.target.value
-    const bookId = thisBook.id
-
-    BooksAPI.update(bookId, bookStatus).then(
-      console.log('Updated....')
-    )
-  }
 
   render() {
 
-    const { thisBook, select, shelf, statusRead } = this.props
+    const { thisBook, section, shelf, changeShelf } = this.props
 
-    return  statusRead === shelf ?
+    return  thisBook.shelf === shelf ?
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: "url("+ thisBook.imageLinks.smallThumbnail +")" }}></div>
+            <div className="book-cover" style={{
+              width: 128,
+              height: 193,
+              backgroundImage: "url("+ thisBook.imageLinks.smallThumbnail +")"
+            }}></div>
             <div className="book-shelf-changer">
-              <select onChange={ e => this.handleChange(e, thisBook) }>
+              <select onChange={ e => changeShelf(e, thisBook) } value={thisBook.shelf}>
                 <option value="move" disabled>Move to...</option>
-                {select.map(maped =>
-                  <option key={maped} value={maped} > {maped}</option>
+                {section.map(shelf =>
+                  <option key={ shelf.shelf } value={ shelf.shelf } > { shelf.titleShelf }</option>
                 )}
               </select>
             </div>
