@@ -14,7 +14,7 @@ export default class ListBooks extends Component {
   }
 
   componentDidUpdate() {
-    console.log('Rodei lista no did')
+    console.log('Rodei lista no DidUpdate')
   }
 
   render() {
