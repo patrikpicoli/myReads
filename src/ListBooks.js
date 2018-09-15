@@ -9,6 +9,7 @@ export default class ListBooks extends Component {
     section: PropTypes.array.isRequired
   }
 
+
   render() {
 
     const { listBooksApi, section, changeShelf } = this.props
