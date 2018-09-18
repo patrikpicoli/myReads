@@ -19,6 +19,8 @@ class BooksApp extends React.Component {
       {titleShelf: 'None', shelf:'none'}
     ],
 
+    searchBook: [],
+
     query: ''
   }
 
@@ -51,21 +53,28 @@ class BooksApp extends React.Component {
   };
 
   updateQuery = (query) => {
-    BooksAPI.search(query).then(
-      this.setState({ query: query })
-    )
+    BooksAPI.search(query).then((books) => {
+      this.setState({
+        searchBook: books,
+        query: query
+      })
+    })
+  }
+
+  clearQuery = () => {
+    this.setState({ searchBook: [] })
   }
 
   render() {
 
-    const { query, books } = this.state
+    const { query, searchBook } = this.state
     let bookListed
 
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i')
-      bookListed = books.filter((book) => match.test(book.title))
+      bookListed = searchBook.filter((book) => match.test(book.title))
     } else {
-      bookListed = books
+      bookListed = []
     }
 
     return (
@@ -94,7 +103,7 @@ class BooksApp extends React.Component {
               />
 
               <div className="open-search">
-                <Link to="/search" >Add a book</Link>
+                <Link to="/search" onClick={ this.clearQuery }>Add a book</Link>
               </div>
             </div>
           )} />
