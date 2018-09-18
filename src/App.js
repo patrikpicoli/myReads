@@ -1,20 +1,16 @@
 import React from 'react'
+import { Route, Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import ListBooks from './ListBooks'
+import Search from './Search'
+
 import escapeRegExp from 'escape-string-regexp'
 
 import './App.css'
 
 class BooksApp extends React.Component {
 
-
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     books: [],
     booksSections: [
       {titleShelf: 'Currently Reading', shelf:'currentlyReading'},
@@ -23,7 +19,6 @@ class BooksApp extends React.Component {
       {titleShelf: 'None', shelf:'none'}
     ],
 
-    showSearchPage: false,
     query: ''
   }
 
@@ -57,9 +52,8 @@ class BooksApp extends React.Component {
 
   updateQuery = (query) => {
     BooksAPI.search(query).then(
-      console.log(query)
+      this.setState({ query: query })
     )
-    this.setState({ query: query.trim() })
   }
 
   render() {
@@ -76,60 +70,34 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                <input type="text"
-                  value={query}
-                  placeholder="Search by title or author"
-                  onChange={(event) => this.updateQuery(event.target.value)}
-                  />
 
+          <Route path='/search' render={({ history }) => (
+            <Search
+            bookList={ bookListed }
+            query={ query }
+            update={ this.updateQuery }
+            changeShelf={this.changeShelf}
+            section={ this.state.booksSections }
+            />
+          )} />
+
+          <Route exact path='/' render={() => (
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+
+              <ListBooks
+                listBooksApi={ this.state.books }
+                section={ this.state.booksSections }
+                changeShelf={this.changeShelf}
+              />
+
+              <div className="open-search">
+                <Link to="/search" >Add a book</Link>
               </div>
             </div>
-            <div className="search-books-results">
-              <ol className="books-grid">
-                {bookListed.map(book =>
-                  <li key={ book.id }>
-                    <div className="book">
-                      <div className="book-top">
-                        <div className="book-cover" style={{
-                          width: 128,
-                          height: 193,
-                          backgroundImage: "url("+ book.imageLinks.smallThumbnail +")"
-                        }}></div>
-                        <div className="book-shelf-changer">
-                          <select onChange={ e => this.changeShelf(e, book) } value={book.shelf}>
-                            <option value="move" disabled>Move to...</option>
-                            {this.state.booksSections.map(shelf =>
-                              <option key={ shelf.shelf } value={ shelf.shelf } > { shelf.titleShelf }</option>
-                            )}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="book-title">{ book.title }</div>
-                      <div className="book-authors">{ book.authors }</div>
-                    </div>
-                  </li>
-                  )}
-              </ol>
-            </div>
-          </div>
-        ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-
-            <ListBooks listBooksApi={ this.state.books } section={ this.state.booksSections } changeShelf={this.changeShelf} />
-
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
-          </div>
-        )}
+          )} />
       </div>
     )
   }

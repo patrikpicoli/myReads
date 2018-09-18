@@ -6,7 +6,8 @@ export default class ListBooks extends Component {
 
   static propTypes = {
     listBooksApi: PropTypes.array.isRequired,
-    section: PropTypes.array.isRequired
+    section: PropTypes.array.isRequired,
+    changeShelf: PropTypes.func
   }
 
 
@@ -28,7 +29,7 @@ export default class ListBooks extends Component {
                     shelf={shelf.shelf}
                     changeShelf={changeShelf}
                     section={section}
-                    />
+                  />
                 )}
               </ol>
             </div>
