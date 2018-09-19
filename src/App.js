@@ -4,8 +4,6 @@ import * as BooksAPI from './BooksAPI'
 import ListBooks from './ListBooks'
 import Search from './Search'
 
-import escapeRegExp from 'escape-string-regexp'
-
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -56,17 +54,16 @@ class BooksApp extends React.Component {
     if(query) {
       BooksAPI.search(query).then((books) => {
         books.length > 0 ?
-        this.setState({
-          searchBook: books,
-          query: query
-        }) :
-        this.setState({
-          searchBook: [],
-          query: query
-        })
+          this.setState({
+            searchBook: books,
+            query: query
+          }) :
+          this.setState({
+            searchBook: [],
+            query: query
+          })
       })
     } else {
-      console.log(3)
       this.setState({
         searchBook: [],
         query: query
@@ -75,28 +72,21 @@ class BooksApp extends React.Component {
   }
 
   clearQuery = () => {
-    this.setState({ searchBook: [] })
+    this.setState({
+      searchBook: [],
+      query: ''
+     })
   }
 
   render() {
-
-    const { query, searchBook } = this.state
-    let bookListed
-
-    if (query) {
-      const match = new RegExp(escapeRegExp(query), 'i')
-      bookListed = searchBook.filter((book) => match.test(book.title))
-    } else {
-      bookListed = []
-    }
 
     return (
       <div className="app">
 
           <Route path='/search' render={({ history }) => (
             <Search
-            bookList={ bookListed }
-            query={ query }
+            bookList={ this.state.searchBook }
+            query={ this.state.query }
             update={ this.updateQuery }
             changeShelf={this.changeShelf}
             section={ this.state.booksSections }
