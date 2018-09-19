@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import {DebounceInput} from 'react-debounce-input';
 import PropTypes from 'prop-types'
 
 export default class Search extends Component {
@@ -19,12 +20,12 @@ export default class Search extends Component {
         <div className="search-books-bar">
           <Link to="/" className="close-search" >Close</Link>
           <div className="search-books-input-wrapper">
-            <input type="text"
-              value={ query }
-              placeholder="Search by title or author"
-              onChange={(event) => update(event.target.value)}
-              />
-
+          <DebounceInput
+            minLength={2}
+            debounceTimeout={300}
+            value={ query }
+            placeholder="Search by title or author"
+            onChange={(event) => update(event.target.value)} />
           </div>
         </div>
         <div className="search-books-results">
