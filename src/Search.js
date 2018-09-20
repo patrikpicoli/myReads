@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {DebounceInput} from 'react-debounce-input';
+import { DebounceInput } from 'react-debounce-input';
+import Book from './Book'
+
 import PropTypes from 'prop-types'
 
 export default class Search extends Component {
@@ -12,7 +14,7 @@ export default class Search extends Component {
 
   render() {
 
-    const { bookList, query, update, changeShelf, section } = this.props
+    const { bookList, query, update, shelf, changeShelf, section } = this.props
 
     return (
 
@@ -31,28 +33,14 @@ export default class Search extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             { bookList.map(book =>
-              <li key={ book.id }>
-                <div className="book">
-                  <div className="book-top">
-                    <div className="book-cover" style={{
-                      width: 128,
-                      height: 193,
-                      backgroundImage: "url("+ book.imageLinks.smallThumbnail +")"
-                    }}></div>
-                    <div className="book-shelf-changer">
-                      <select onChange={ e => changeShelf(e, book) } value={book.shelf}>
-                        <option value="move" disabled>Move to...</option>
-                        { section.map(shelf =>
-                          <option key={ shelf.shelf } value={ shelf.shelf } > { shelf.titleShelf }</option>
-                          ) }
-                      </select>
-                    </div>
-                  </div>
-                  <div className="book-title">{ book.title }</div>
-                  <div className="book-authors">{ book.authors }</div>
-                </div>
-              </li>
-              )}
+              <Book
+              key={ book.id }
+              thisBook={book}
+              shelf={shelf}
+              changeShelf={changeShelf}
+              section={section}
+              />
+            )}
           </ol>
         </div>
       </div>

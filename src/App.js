@@ -10,13 +10,6 @@ class BooksApp extends React.Component {
 
   state = {
     books: [],
-    booksSections: [
-      {titleShelf: 'Currently Reading', shelf:'currentlyReading'},
-      {titleShelf: 'Want to Read', shelf:'wantToRead'},
-      {titleShelf: 'Read', shelf:'read'},
-      {titleShelf: 'None', shelf:'none'}
-    ],
-
     searchBook: [],
 
     query: ''
@@ -46,7 +39,7 @@ class BooksApp extends React.Component {
         updatedBooks.push(bookUpdate)
 
         // Change state with book updated
-        this.setState({ books: updatedBooks })
+        this.setState({ ...bookUpdate, shelf })
       });
   };
 
@@ -75,10 +68,18 @@ class BooksApp extends React.Component {
     this.setState({
       searchBook: [],
       query: ''
-     })
+    })
   }
 
   render() {
+
+    // Books shelf
+    const booksSections = [
+      {titleShelf: 'Currently Reading', shelf:'currentlyReading'},
+      {titleShelf: 'Want to Read', shelf:'wantToRead'},
+      {titleShelf: 'Read', shelf:'read'},
+      {titleShelf: 'None', shelf:'none'}
+    ]
 
     return (
       <div className="app">
@@ -89,7 +90,7 @@ class BooksApp extends React.Component {
             query={ this.state.query }
             update={ this.updateQuery }
             changeShelf={this.changeShelf}
-            section={ this.state.booksSections }
+            section={ booksSections }
             />
           )} />
 
@@ -101,7 +102,7 @@ class BooksApp extends React.Component {
 
               <ListBooks
                 listBooksApi={ this.state.books }
-                section={ this.state.booksSections }
+                section={ booksSections }
                 changeShelf={this.changeShelf}
               />
 

@@ -7,7 +7,7 @@ class Book extends Component {
     const { thisBook, section, shelf, changeShelf } = this.props
 
     return  thisBook.shelf === shelf ?
-      <li>
+      <li key={ thisBook.id }>
         <div className="book">
           <div className="book-top">
             <div className="book-cover" style={{
@@ -16,7 +16,7 @@ class Book extends Component {
               backgroundImage: "url("+ thisBook.imageLinks.smallThumbnail +")"
             }}></div>
             <div className="book-shelf-changer">
-              <select onChange={ e => changeShelf(e, thisBook) } value={thisBook.shelf}>
+              <select onChange={ e => changeShelf(e, thisBook) } value={ thisBook.shelf }>
                 <option value="move" disabled>Move to...</option>
                 {section.map(shelf =>
                   <option key={ shelf.shelf } value={ shelf.shelf } > { shelf.titleShelf }</option>
