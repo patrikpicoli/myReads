@@ -39,6 +39,7 @@ export default class Search extends Component {
               shelf={shelf}
               changeShelf={changeShelf}
               section={section}
+              defaultShelf={'none'}
               />
             )}
           </ol>

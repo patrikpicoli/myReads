@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import fallbackCover from './icons/fallback-cover.png'
 
 class Book extends Component {
 
   render() {
 
     const { thisBook, section, shelf, changeShelf } = this.props
+    const bookCover = thisBook.imageLinks && thisBook.imageLinks.smallThumbnail ? thisBook.imageLinks.smallThumbnail : fallbackCover
+    // const defaultShelf = 'none'
 
     return  thisBook.shelf === shelf ?
       <li key={ thisBook.id }>
@@ -13,7 +16,7 @@ class Book extends Component {
             <div className="book-cover" style={{
               width: 128,
               height: 193,
-              backgroundImage: "url("+ thisBook.imageLinks.smallThumbnail +")"
+              backgroundImage: `url('${ bookCover }')`
             }}></div>
             <div className="book-shelf-changer">
               <select onChange={ e => changeShelf(e, thisBook) } value={ thisBook.shelf }>
