@@ -16,8 +16,6 @@ export default class Search extends Component {
 
     const { bookList, query, update, shelf, changeShelf, section } = this.props
 
-    console.log('Search list result: ', bookList)
-
     return (
 
       <div className="search-books">
@@ -38,7 +36,7 @@ export default class Search extends Component {
 
         <div className="search-books-results">
           <ol className="books-grid">
-            {console.log('Search <ol>: ', bookList)}
+
             { bookList.map(book =>
               <Book
               key={ book.id }
@@ -48,6 +46,7 @@ export default class Search extends Component {
               section={section}
               />
             )}
+
           </ol>
         </div>
       </div>

@@ -5,11 +5,10 @@ class Book extends Component {
 
   render() {
 
-    const { thisBook, section, shelf, changeShelf } = this.props
+    const { thisBook, section, changeShelf } = this.props
     const bookCover = thisBook.imageLinks && thisBook.imageLinks.smallThumbnail ? thisBook.imageLinks.smallThumbnail : fallbackCover
-    // const defaultShelf = 'none'
 
-    return  thisBook.shelf === shelf ?
+    return (
       <li key={ thisBook.id }>
         <div className="book">
           <div className="book-top">
@@ -31,8 +30,7 @@ class Book extends Component {
           <div className="book-authors">{ thisBook.authors }</div>
         </div>
       </li>
-      :
-      ''
+    )
   }
 }
 

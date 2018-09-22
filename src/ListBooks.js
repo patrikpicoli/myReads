@@ -9,14 +9,19 @@ const ListBooks = props =>
           <h2 className="bookshelf-title">{ shelf.titleShelf }</h2>
           <div className="bookshelf-books">
             <ol className="books-grid">
+
               {props.listBooksApi.map(book =>
-                <Book
-                  key={ book.id }
-                  thisBook={book}
-                  shelf={shelf.shelf}
-                  changeShelf={props.changeShelf}
-                  section={props.section}
-                />
+
+                book.shelf === shelf.shelf ?
+                    <Book
+                      key={ book.id }
+                      thisBook={book}
+                      shelf={shelf.shelf}
+                      changeShelf={props.changeShelf}
+                      section={props.section}
+                    />
+
+                  : null
               )}
             </ol>
           </div>

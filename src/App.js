@@ -58,7 +58,6 @@ class BooksApp extends React.Component {
 
           const myListbooks = this.state.books
 
-          console.log(books, myListbooks)
           this.setState({
             searchBook: books.map(book => {
               const bookExists = myListbooks.find(b => b.id === book.id)
@@ -71,7 +70,6 @@ class BooksApp extends React.Component {
             }),
             query: query
           })
-          console.log(this.state.searchBook)
         }
 
       })
