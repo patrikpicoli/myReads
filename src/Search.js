@@ -16,22 +16,29 @@ export default class Search extends Component {
 
     const { bookList, query, update, shelf, changeShelf, section } = this.props
 
+    console.log('Search list result: ', bookList)
+
     return (
 
       <div className="search-books">
+
         <div className="search-books-bar">
           <Link to="/" className="close-search">Close</Link>
+
           <div className="search-books-input-wrapper">
-          <DebounceInput
-            minLength={2}
-            debounceTimeout={300}
-            value={ query }
-            placeholder="Search by title or author"
-            onChange={(event) => update(event.target.value)} />
+            <DebounceInput
+              minLength={2}
+              debounceTimeout={300}
+              value={ query }
+              placeholder="Search by title or author"
+              onChange={(event) => update(event.target.value)}
+            />
           </div>
         </div>
+
         <div className="search-books-results">
           <ol className="books-grid">
+            {console.log('Search <ol>: ', bookList)}
             { bookList.map(book =>
               <Book
               key={ book.id }
@@ -39,7 +46,6 @@ export default class Search extends Component {
               shelf={shelf}
               changeShelf={changeShelf}
               section={section}
-              defaultShelf={'none'}
               />
             )}
           </ol>

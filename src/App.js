@@ -55,10 +55,23 @@ class BooksApp extends React.Component {
       BooksAPI.search(query).then((books) => {
 
         if(books.length > 0) {
+
+          const myListbooks = this.state.books
+
+          console.log(books, myListbooks)
           this.setState({
-            searchBook: books,
+            searchBook: books.map(book => {
+              const bookExists = myListbooks.find(b => b.id === book.id)
+              if(bookExists) {
+                book.shelf = bookExists.shelf
+              } else {
+                book.shelf = 'none'
+              }
+              return book
+            }),
             query: query
           })
+          console.log(this.state.searchBook)
         }
 
       })
