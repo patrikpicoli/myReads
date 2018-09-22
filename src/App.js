@@ -21,40 +21,46 @@ class BooksApp extends React.Component {
     })
   }
 
-  changeShelf = (e, bookUpdate) => {
+  changeShelf = (e, bookTobeUpdated) => {
+
+    // Receive value option selected on book
     const shelf = e.target.value;
+
+    // tmp array to receive book that was change selection
     let updatedBooks = [];
 
-    // Call API to update Book
-    BooksAPI.update(bookUpdate, shelf)
+    // Call API to update Book pass book to be updated and shelf value
+    BooksAPI.update(bookTobeUpdated, shelf)
       .then(res => {
 
-        // Change bookShelf to selected shelf
-        bookUpdate.shelf = shelf
+        // Change book to selected shelf
+        const updatedBook = {
+          ...bookTobeUpdated,
+          shelf
+        }
 
         // Get all books !== of book selected
-        updatedBooks = this.state.books.filter(book => book.id !== bookUpdate.id)
+        updatedBooks = this.state.books.filter(book => book.id !== updatedBook.id)
 
         // Change updatedBooks with updated list
-        updatedBooks.push(bookUpdate)
+        updatedBooks.push(updatedBook)
 
         // Change state with book updated
-        this.setState({ ...bookUpdate, shelf })
+        this.setState({ books: updatedBooks })
       });
   };
 
   updateQuery = (query) => {
     if(query) {
       BooksAPI.search(query).then((books) => {
-        books.length > 0 ?
+
+        if(books.length > 0) {
           this.setState({
             searchBook: books,
             query: query
-          }) :
-          this.setState({
-            searchBook: [],
-            query: query
           })
+        }
+
       })
     } else {
       this.setState({
@@ -83,6 +89,23 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
+          <Route exact path='/' render={() => (
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+
+              <ListBooks
+                listBooksApi={ this.state.books }
+                changeShelf={this.changeShelf}
+                section={ booksSections }
+              />
+
+              <div className="open-search">
+                <Link to="/search" onClick={ this.clearQuery }>Add a book</Link>
+              </div>
+            </div>
+          )} />
 
           <Route path='/search' render={({ history }) => (
             <Search
@@ -94,23 +117,7 @@ class BooksApp extends React.Component {
             />
           )} />
 
-          <Route exact path='/' render={() => (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
 
-              <ListBooks
-                listBooksApi={ this.state.books }
-                section={ booksSections }
-                changeShelf={this.changeShelf}
-              />
-
-              <div className="open-search">
-                <Link to="/search" onClick={ this.clearQuery }>Add a book</Link>
-              </div>
-            </div>
-          )} />
       </div>
     )
   }
