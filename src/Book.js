@@ -6,7 +6,9 @@ class Book extends Component {
   render() {
 
     const { thisBook, section, changeShelf } = this.props
-    const bookCover = thisBook.imageLinks && thisBook.imageLinks.smallThumbnail ? thisBook.imageLinks.smallThumbnail : fallbackCover
+    const bookCover = thisBook.imageLinks && thisBook.imageLinks.smallThumbnail ?
+                        thisBook.imageLinks.smallThumbnail :
+                        fallbackCover
 
     return (
       <li key={ thisBook.id }>
