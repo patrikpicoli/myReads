@@ -39,11 +39,8 @@ class BooksApp extends React.Component {
           shelf
         }
 
-
         const bookSearchTobeUpdated = this.state.searchBook.filter(b => b.id === updatedBook.id)
         bookSearchTobeUpdated.shelf = shelf
-
-        console.log('Book Shelf: ', bookSearchTobeUpdated.shelf)
 
         this.setState({ searchBook: this.state.searchBook.map(b =>
             b.id === bookTobeUpdated.id ?
@@ -51,10 +48,12 @@ class BooksApp extends React.Component {
                 ...b,
                 shelf
               } :
-              b
+              {
+                ...b,
+                shelf: 'none'
+              }
           )
         })
-
 
         // Get all books !== of book selected
         updatedBooks = this.state.books.filter(book => book.id !== updatedBook.id)
