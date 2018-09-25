@@ -31,7 +31,7 @@ class BooksApp extends React.Component {
 
     // Call API to update Book pass book to be updated and shelf value
     BooksAPI.update(bookTobeUpdated, shelf)
-      .then(res => {
+      .then(() => {
 
         // Change book to selected shelf
         const updatedBook = {
@@ -39,8 +39,26 @@ class BooksApp extends React.Component {
           shelf
         }
 
+
+        const bookSearchTobeUpdated = this.state.searchBook.filter(b => b.id === updatedBook.id)
+        bookSearchTobeUpdated.shelf = shelf
+
+        console.log('Book Shelf: ', bookSearchTobeUpdated.shelf)
+
+        this.setState({ searchBook: this.state.searchBook.map(b =>
+            b.id === bookTobeUpdated.id ?
+              {
+                ...b,
+                shelf
+              } :
+              b
+          )
+        })
+
+
         // Get all books !== of book selected
         updatedBooks = this.state.books.filter(book => book.id !== updatedBook.id)
+
 
         // Change updatedBooks with updated list
         updatedBooks.push(updatedBook)
